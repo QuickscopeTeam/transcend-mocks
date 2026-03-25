@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="McDonald's — Redesign Concept">
+  <meta property="og:description" content="A premium reimagining of the world's most iconic restaurant brand.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="McDonald's — Redesign Concept">
+  <meta name="twitter:description" content="A premium reimagining of the world's most iconic restaurant brand.">
+  <title>McDonald's — Redesign Concept</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    /* ========== RESET ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; line-height: 1.6; overflow-x: hidden; background: var(--bg); color: var(--text); }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ========== DESIGN TOKENS ========== */
+    :root {
+      --accent: #DA291C;
+      --accent-light: #E8453A;
+      --accent-glow: rgba(218,41,28,0.30);
+      --accent-soft: rgba(218,41,28,0.15);
+      --accent-dim: rgba(218,41,28,0.08);
+      --accent-border: rgba(218,41,28,0.25);
+      --yellow: #FFC72C;
+      --bg: #09090f;
+      --dark: #0f0f18;
+      --card: #13131e;
+      --surface: rgba(255,255,255,0.03);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.5);
+      --faint: rgba(255,255,255,0.26);
+      --border: rgba(255,255,255,0.07);
+      --blur: blur(22px);
+      --radius: 24px;
+    }
+
+    /* ========== TYPOGRAPHY ========== */
+    .font-serif { font-family: 'Instrument Serif', serif; }
+    .font-sans { font-family: 'DM Sans', sans-serif; }
+
+    h1, h2, h3 { font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: -0.02em; }
+    h1 { font-size: clamp(52px, 8vw, 102px); line-height: 1.05; }
+    h2 { font-size: clamp(36px, 4.5vw, 58px); line-height: 1.1; }
+    h3 { font-size: clamp(24px, 2.5vw, 32px); line-height: 1.2; }
+
+    p { font-weight: 300; line-height: 1.75; color: var(--muted); }
+    .text-accent { color: var(--accent); }
+    em { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--accent); }
+
+    /* ========== LAYOUT ========== */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+    .section { padding: 100px 40px; position: relative; z-index: 1; }
+    .section-divider { width: 100%; height: 1px; background: var(--border); }
+
+    /* ========== EYEBROW ========== */
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 24px;
+    }
+    .eyebrow::before {
+      content: ''; display: block; width: 24px; height: 2px; background: var(--accent);
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 16px 36px; border-radius: 100px; font-size: 14px; font-weight: 600;
+      letter-spacing: 0.03em; cursor: pointer; border: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 0 30px var(--accent-glow), 0 0 60px rgba(218,41,28,0.12);
+    }
+    .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 40px var(--accent-glow), 0 0 80px rgba(218,41,28,0.18); }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--faint);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* ========== AMBIENT BACKGROUND ========== */
+    .ambient {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+      pointer-events: none; overflow: hidden;
+    }
+    .ambient-orb {
+      position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15;
+    }
+    .orb-1 {
+      width: 600px; height: 600px; background: var(--accent);
+      top: -200px; right: -150px;
+      animation: drift1 12s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 500px; height: 500px; background: var(--yellow);
+      bottom: -200px; left: -150px;
+      animation: drift2 10s ease-in-out infinite;
+    }
+    .orb-3 {
+      width: 400px; height: 400px; background: var(--accent);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      animation: drift3 14s ease-in-out infinite;
+      opacity: 0.08;
+    }
+    @keyframes drift1 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-40px, 30px); }
+    }
+    @keyframes drift2 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, -40px); }
+    }
+    @keyframes drift3 {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.2); }
+    }
+
+    /* ========== PILL NAV ========== */
+    .pill-nav {
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px);
+      z-index: 50; display: flex; align-items: center; gap: 32px;
+      padding: 14px 32px; border-radius: 100px;
+      background: rgba(15,15,24,0.75); backdrop-filter: blur(22px);
+      border: 1px solid var(--accent-border);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pill-nav.visible { transform: translateX(-50%) translateY(0); }
+    .pill-nav a {
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      transition: color 0.25s ease;
+    }
+    .pill-nav a:hover { color: var(--text); }
+    .pill-nav .nav-cta {
+      padding: 10px 24px; border-radius: 100px; background: var(--accent);
+      color: #fff; font-size: 13px; font-weight: 600;
+      box-shadow: 0 0 20px var(--accent-glow);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .pill-nav .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 0 30px var(--accent-glow); }
+
+    /* ========== HERO ========== */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; position: relative; z-index: 1; padding: 120px 40px 100px;
+    }
+    .hero-inner { max-width: 900px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 20px; border-radius: 100px;
+      background: var(--accent-dim); border: 1px solid var(--accent-border);
+      font-size: 12px; font-weight: 500; color: var(--accent-light);
+      margin-bottom: 32px;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.4); }
+    }
+    .hero p {
+      font-size: 18px; max-width: 600px; margin: 28px auto 40px;
+    }
+    .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ========== TICKER ========== */
+    .ticker-wrap {
+      overflow: hidden; background: var(--dark); border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); padding: 20px 0; position: relative; z-index: 1;
+    }
+    .ticker {
+      display: flex; gap: 64px; white-space: nowrap;
+      animation: ticker-scroll 30s linear infinite;
+    }
+    .ticker:hover { animation-play-state: paused; }
+    .ticker-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14px; font-weight: 400; color: var(--muted);
+    }
+    .ticker-item .ticker-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0;
+    }
+    @keyframes ticker-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ========== MENU HIGHLIGHTS ========== */
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-top: 48px;
+    }
+    .menu-card {
+      position: relative; border-radius: var(--radius); overflow: hidden;
+      background: rgba(255,255,255,0.03); backdrop-filter: blur(22px);
+      border: 1px solid var(--border); padding: 32px;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: default;
+    }
+    .menu-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--accent); opacity: 0; transition: opacity 0.3s ease;
+    }
+    .menu-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-border);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    }
+    .menu-card:hover::before { opacity: 1; }
+    .menu-card-icon {
+      font-size: 48px; margin-bottom: 20px; display: block;
+    }
+    .menu-card h3 { margin-bottom: 12px; }
+    .menu-card p { font-size: 14px; }
+
+    /* ========== GLOW CARDS ========== */
+    .glow-card {
+      position: relative; border-radius: var(--radius); overflow: visible;
+    }
+    .glow-card::before {
+      content: ''; position: absolute; inset: -1px; border-radius: inherit;
+      background: conic-gradient(from 0deg at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        var(--accent) 0%, transparent 15%, transparent 85%, var(--accent) 100%);
+      opacity: 0; transition: opacity 0.3s; z-index: -1;
+    }
+    .glow-card:hover::before { opacity: 1; }
+    .glow-card-inner {
+      position: relative; border-radius: calc(var(--radius) - 2px);
+      background: var(--card); padding: 32px; border: 1px solid var(--border);
+      height: 100%;
+    }
+
+    /* ========== STATS ========== */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+      margin-top: 48px;
+    }
+    .stat-card {
+      text-align: center; padding: 40px 24px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .stat-card:hover { border-color: var(--accent-border); transform: translateY(-2px); }
+    .stat-number {
+      font-family: 'Instrument Serif', serif; font-size: clamp(40px, 5vw, 64px);
+      color: var(--text); letter-spacing: -0.02em;
+    }
+    .stat-suffix { color: var(--accent); }
+    .stat-label {
+      font-size: 13px; font-weight: 400; color: var(--muted); margin-top: 8px;
+    }
+
+    /* ========== HERITAGE ========== */
+    .heritage-content {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+      margin-top: 48px;
+    }
+    .heritage-text p { margin-bottom: 20px; }
+    .timeline {
+      display: flex; flex-direction: column; gap: 24px;
+    }
+    .timeline-item {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 20px 24px; border-radius: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    .timeline-item:hover { border-color: var(--accent-border); }
+    .timeline-year {
+      font-family: 'Instrument Serif', serif; font-size: 28px;
+      color: var(--accent); flex-shrink: 0; min-width: 60px;
+    }
+    .timeline-desc {
+      font-size: 14px; color: var(--muted); line-height: 1.6;
+    }
+
+    /* ========== INNOVATION ========== */
+    .innovation-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+      margin-top: 48px;
+    }
+    .innovation-card {
+      position: relative; border-radius: var(--radius); overflow: hidden;
+      background: var(--card); border: 1px solid var(--border);
+      padding: 40px 32px; display: flex; flex-direction: column; gap: 16px;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .innovation-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--accent); opacity: 0; transition: opacity 0.3s;
+    }
+    .innovation-card:hover { transform: translateY(-3px); border-color: var(--accent-border); }
+    .innovation-card:hover::before { opacity: 1; }
+    .innovation-icon { font-size: 36px; }
+    .innovation-card p { font-size: 14px; }
+
+    /* ========== CTA SECTION ========== */
+    .cta-section {
+      text-align: center; padding: 120px 40px;
+      position: relative; z-index: 1;
+    }
+    .cta-section h2 { margin-bottom: 20px; }
+    .cta-section p { max-width: 500px; margin: 0 auto 40px; font-size: 17px; }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      padding: 60px 40px 40px; border-top: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+    }
+    .footer-brand h3 { font-size: 24px; margin-bottom: 12px; }
+    .footer-brand p { font-size: 13px; max-width: 280px; }
+    .footer-col h4 {
+      font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .footer-col a {
+      display: block; font-size: 14px; color: var(--muted); padding: 4px 0;
+      transition: color 0.2s ease;
+    }
+    .footer-col a:hover { color: var(--text); }
+    .footer-bottom {
+      max-width: 1100px; margin: 40px auto 0; padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { font-size: 12px; color: var(--faint); }
+    .footer-credit {
+      font-size: 11px; color: var(--faint);
+    }
+    .footer-credit span { color: var(--accent); }
+
+    /* ========== SCROLL REVEAL ========== */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.35s; }
+
+    /* ========== ARCHES ICON (CSS) ========== */
+    .arches-icon {
+      display: inline-block; position: relative; width: 60px; height: 52px; margin-bottom: 24px;
+    }
+    .arches-icon::before, .arches-icon::after {
+      content: ''; position: absolute; bottom: 0;
+      width: 22px; height: 44px;
+      border-radius: 22px 22px 0 0;
+      border: 4px solid var(--yellow);
+      border-bottom: none;
+    }
+    .arches-icon::before { left: 4px; }
+    .arches-icon::after { right: 4px; }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1024px) {
+      .heritage-content { grid-template-columns: 1fr; gap: 48px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .section { padding: 80px 32px; }
+    }
+    @media (max-width: 680px) {
+      .menu-grid { grid-template-columns: 1fr; }
+      .innovation-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+      .section { padding: 60px 20px; }
+      .pill-nav { gap: 16px; padding: 12px 20px; }
+      .pill-nav .nav-links { display: none; }
+      .hero { padding: 100px 20px 80px; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .cta-buttons { flex-direction: column; align-items: center; }
+    }
+    @media (max-width: 380px) {
+      h1 { font-size: 44px; }
+      .btn { padding: 14px 24px; font-size: 14px; }
+      .stat-number { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AMBIENT BACKGROUND -->
+  <div class="ambient">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+  </div>
+
+  <!-- PILL NAV -->
+  <nav class="pill-nav" id="pillNav">
+    <a href="#" style="font-family:'Instrument Serif',serif; font-size:18px; color:var(--text);">McDonald's</a>
+    <span class="nav-links" style="display:flex; gap:24px;">
+      <a href="#menu">Menu</a>
+      <a href="#heritage">Heritage</a>
+      <a href="#innovation">Innovation</a>
+    </span>
+    <a href="#order" class="nav-cta">Order Now</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-badge reveal">
+        <span class="dot"></span>
+        Serving 69 Million Daily
+      </div>
+      <h1 class="reveal reveal-delay-1">Billions Served.<br><em>One Vision.</em></h1>
+      <p class="reveal reveal-delay-2">The world's most recognized restaurant — reimagined for the next generation of dining, delivery, and digital experience.</p>
+      <div class="hero-buttons reveal reveal-delay-3">
+        <a href="#order" class="btn btn-primary">Order Now</a>
+        <a href="#menu" class="btn btn-ghost">Explore the Menu</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker" id="ticker">
+      <div class="ticker-item"><span class="ticker-dot"></span>40,000+ Locations Worldwide</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>100+ Countries</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>69 Million Customers Daily</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Founded 1940</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>#1 QSR Brand Globally</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>McDelivery in 30+ Markets</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>$200B+ Market Cap</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>2M+ Team Members</div>
+      <!-- Duplicate for seamless loop -->
+      <div class="ticker-item"><span class="ticker-dot"></span>40,000+ Locations Worldwide</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>100+ Countries</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>69 Million Customers Daily</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Founded 1940</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>#1 QSR Brand Globally</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>McDelivery in 30+ Markets</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>$200B+ Market Cap</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>2M+ Team Members</div>
+    </div>
+  </div>
+
+  <!-- MENU HIGHLIGHTS -->
+  <section class="section" id="menu">
+    <div class="container">
+      <div class="eyebrow reveal">The Menu</div>
+      <h2 class="reveal reveal-delay-1">Iconic Flavors,<br><em>Elevated.</em></h2>
+      <div class="menu-grid">
+        <div class="menu-card glow-card reveal reveal-delay-1">
+          <div class="glow-card-inner">
+            <span class="menu-card-icon">🍔</span>
+            <h3>Big Mac</h3>
+            <p>Two all-beef patties, special sauce, lettuce, cheese, pickles, onions — on a sesame seed bun. The icon since 1968.</p>
+          </div>
+        </div>
+        <div class="menu-card glow-card reveal reveal-delay-2">
+          <div class="glow-card-inner">
+            <span class="menu-card-icon">🍟</span>
+            <h3>World Famous Fries</h3>
+            <p>Golden, crispy, and perfectly salted. Over 9 million pounds served every single day across the globe.</p>
+          </div>
+        </div>
+        <div class="menu-card glow-card reveal reveal-delay-3">
+          <div class="glow-card-inner">
+            <span class="menu-card-icon">🥤</span>
+            <h3>McCafé</h3>
+            <p>Premium roast coffee, handcrafted espresso drinks, and fresh-baked goods. Café quality, McDonald's convenience.</p>
+          </div>
+        </div>
+        <div class="menu-card glow-card reveal reveal-delay-1">
+          <div class="glow-card-inner">
+            <span class="menu-card-icon">🍗</span>
+            <h3>McNuggets</h3>
+            <p>Tender, juicy chicken in a crispy coating. Paired with your choice of signature dipping sauces.</p>
+          </div>
+        </div>
+        <div class="menu-card glow-card reveal reveal-delay-2">
+          <div class="glow-card-inner">
+            <span class="menu-card-icon">🍦</span>
+            <h3>McFlurry</h3>
+            <p>Creamy vanilla soft serve blended with your favorite mix-ins. The perfect sweet finish to any meal.</p>
+          </div>
+        </div>
+        <div class="menu-card glow-card reveal reveal-delay-3">
+          <div class="glow-card-inner">
+            <span class="menu-card-icon">🌅</span>
+            <h3>Breakfast</h3>
+            <p>Egg McMuffin, hotcakes, hash browns — mornings done right since 1975. All-day breakfast where available.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- STATS -->
+  <section class="section" id="stats">
+    <div class="container">
+      <div class="eyebrow reveal">By the Numbers</div>
+      <h2 class="reveal reveal-delay-1">Scale That <em>Speaks.</em></h2>
+      <div class="stats-grid">
+        <div class="stat-card reveal reveal-delay-1">
+          <div class="stat-number"><span class="count-up" data-target="40000">0</span><span class="stat-suffix">+</span></div>
+          <div class="stat-label">Restaurants Worldwide</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-2">
+          <div class="stat-number"><span class="count-up" data-target="100">0</span><span class="stat-suffix">+</span></div>
+          <div class="stat-label">Countries &amp; Territories</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-3">
+          <div class="stat-number"><span class="count-up" data-target="69">0</span><span class="stat-suffix">M</span></div>
+          <div class="stat-label">Customers Served Daily</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-4">
+          <div class="stat-number"><span class="count-up" data-target="84">0</span><span class="stat-suffix">yrs</span></div>
+          <div class="stat-label">Years of Golden Arches</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- HERITAGE -->
+  <section class="section" id="heritage">
+    <div class="container">
+      <div class="eyebrow reveal">Our Heritage</div>
+      <h2 class="reveal reveal-delay-1">From a Single Stand<br>to <em>Global Icon.</em></h2>
+      <div class="heritage-content">
+        <div class="heritage-text reveal reveal-delay-2">
+          <p>What began as a small drive-in restaurant in San Bernardino, California has grown into the most recognized brand on the planet. The Golden Arches represent more than food — they stand for community, consistency, and innovation that transcends borders.</p>
+          <p>Every day, McDonald's welcomes nearly 69 million customers in over 100 countries. From Tokyo to Toronto, São Paulo to Stockholm — the promise remains the same: quality, service, cleanliness, and value.</p>
+          <a href="#" class="btn btn-ghost" style="margin-top:12px;">Our Full Story</a>
+        </div>
+        <div class="timeline reveal reveal-delay-3">
+          <div class="timeline-item">
+            <span class="timeline-year">1940</span>
+            <span class="timeline-desc">Richard & Maurice McDonald open the original restaurant in San Bernardino, CA</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-year">1955</span>
+            <span class="timeline-desc">Ray Kroc opens the first franchised McDonald's in Des Plaines, IL</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-year">1968</span>
+            <span class="timeline-desc">The Big Mac is introduced — becoming the world's most iconic burger</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-year">2003</span>
+            <span class="timeline-desc">"I'm Lovin' It" campaign launches globally — still running today</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-year">2026</span>
+            <span class="timeline-desc">40,000+ restaurants, leading the industry in digital ordering & sustainability</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- INNOVATION -->
+  <section class="section" id="innovation">
+    <div class="container">
+      <div class="eyebrow reveal">Innovation</div>
+      <h2 class="reveal reveal-delay-1">The Future of <em>Fast.</em></h2>
+      <div class="innovation-grid">
+        <div class="innovation-card reveal reveal-delay-1">
+          <span class="innovation-icon">📱</span>
+          <h3>Mobile Ordering</h3>
+          <p>Skip the line. Order ahead through the McDonald's app, customize your meal, and pick up seamlessly at the counter, drive-thru, or curbside.</p>
+        </div>
+        <div class="innovation-card reveal reveal-delay-2">
+          <span class="innovation-icon">🚗</span>
+          <h3>McDelivery</h3>
+          <p>Your favorites, delivered to your door. Available in 30+ markets worldwide through our app and delivery partners.</p>
+        </div>
+        <div class="innovation-card reveal reveal-delay-3">
+          <span class="innovation-icon">🌱</span>
+          <h3>Sustainability</h3>
+          <p>Committed to net-zero emissions by 2050. Responsibly sourced beef, cage-free eggs, and sustainable packaging across all markets.</p>
+        </div>
+        <div class="innovation-card reveal reveal-delay-4">
+          <span class="innovation-icon">⭐</span>
+          <h3>MyMcDonald's Rewards</h3>
+          <p>Earn points on every order. Redeem for free menu items. Exclusive deals, birthday surprises, and members-only promotions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- CTA -->
+  <section class="cta-section" id="order">
+    <div class="container">
+      <div class="arches-icon reveal"></div>
+      <h2 class="reveal reveal-delay-1">Ready to <em>Order?</em></h2>
+      <p class="reveal reveal-delay-2">Download the app, explore the menu, or find a restaurant near you. The Golden Arches are always close.</p>
+      <div class="cta-buttons reveal reveal-delay-3">
+        <a href="#" class="btn btn-primary">Download the App</a>
+        <a href="#" class="btn btn-ghost">Find a Restaurant</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3 class="font-serif">McDonald's</h3>
+        <p>The world's leading quick-service restaurant brand. Serving communities in 100+ countries since 1940.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Careers</a>
+        <a href="#">Investors</a>
+        <a href="#">Newsroom</a>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="#">McDelivery</a>
+        <a href="#">Mobile Order</a>
+        <a href="#">Catering</a>
+        <a href="#">Gift Cards</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="#">Contact Us</a>
+        <a href="#">FAQs</a>
+        <a href="#">Franchising</a>
+        <a href="#">Sustainability</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 McDonald's Corporation. All rights reserved.</p>
+      <p class="footer-credit">Designed by <span>Transcend Media</span></p>
+    </div>
+  </footer>
+
+  <script>
+    /* ========== PILL NAV — scroll-activated ========== */
+    const pillNav = document.getElementById('pillNav');
+    window.addEventListener('scroll', () => {
+      pillNav.classList.toggle('visible', window.scrollY > 100);
+    });
+
+    /* ========== SCROLL REVEAL ========== */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ========== COUNT-UP NUMBERS ========== */
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          if (el.dataset.counted) return;
+          el.dataset.counted = 'true';
+          const target = parseInt(el.dataset.target);
+          const duration = 2000;
+          const start = performance.now();
+          const update = (time) => {
+            const progress = Math.min((time - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.floor(eased * target).toLocaleString();
+            if (progress < 1) requestAnimationFrame(update);
+          };
+          requestAnimationFrame(update);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.count-up').forEach(el => countObserver.observe(el));
+
+    /* ========== GLOW CARD — mouse tracking ========== */
+    document.querySelectorAll('.glow-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', x + '%');
+        card.style.setProperty('--mouse-y', y + '%');
+      });
+    });
+
+    /* ========== SMOOTH SCROLL for anchor links ========== */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
